@@ -38,6 +38,7 @@ jobs:
 
       - name: Log in to private registry
         uses: docker/login-action@v3
+        if: ${{ env.REGISTRY_USERNAME != '' && env.REGISTRY_PASSWORD != '' }}
         with:
           registry: ${{ env.REGISTRY_URL }}
           username: ${{ env.REGISTRY_USERNAME }}
