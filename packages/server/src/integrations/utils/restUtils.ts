@@ -12,6 +12,14 @@ export function getAttachmentHeaders(
   // all content-disposition headers should be format disposition-type; parameters
   // but some APIs do not provide a type, causing the parse below to fail - add one to fix this
   if (contentDisposition) {
+    const [type, ...rest] = contentDisposition.split(";")
+    const dispositionType = type.trim().toLowerCase()
+
+    // if the response is explicitly inline, do not try to coerce it
+    if (dispositionType === "inline") {
+      return { contentDisposition, contentType }
+    }
+
     const quotesRegex = /"(?:[^"\\]|\\.)*"|;/g
     let match: RegExpMatchArray | null = null,
       found = false
